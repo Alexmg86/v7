@@ -13,6 +13,10 @@ class Invoice extends Model
 
     protected $fillable = ['name'];
 
+    protected $appends = [
+        'full'
+    ];
+
     // protected $withCount = 'items';
 
     // protected $withSum = ["items:price"];
@@ -25,5 +29,10 @@ class Invoice extends Model
     public function goods()
     {
         return $this->belongsToMany('App\Good');
+    }
+
+    public function getFullAttribute()
+    {
+        return $this->name;
     }
 }
