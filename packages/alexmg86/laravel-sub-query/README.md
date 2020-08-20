@@ -124,3 +124,20 @@ $invoices->loadLimit(['items:2', 'goods:1' => function ($query) {
 }]);
 ```
 Note that first you write the name of the relation, and then the number of rows.
+
+### Load latest or oldest relation
+
+Imagine you want to get a list of 50 accounts, each with 100 items. By default, you will get 5000 positions and select the first ones for each account. PHP smokes nervously on the sidelines.
+Wow! Now you can load only one latest or oldest related model:
+```php
+$invoices = Invoice::all();
+$invoices->loadOneLatest('items');
+$invoices->loadOneOldest('items');
+```
+or with conditions
+```php
+$invoices->loadOneLatest(['items' => function ($query) {
+    $query->orderBy('id', 'desc')->where('price', '<', 6);
+}]);
+```
+You can use this with relation types hasMany, belongsToMany and hasManyThrough.
