@@ -110,14 +110,6 @@ trait LaravelSubQueryTrait
             $newEloquentBuilder->setWithAvg($this->withAvg);
         }
 
-        if (isset($this->withOneOldest)) {
-            $newEloquentBuilder->setWithOneOldest($this->withOneOldest);
-        }
-
-        if (isset($this->withOneLatest)) {
-            $newEloquentBuilder->setWithOneLatest($this->withOneLatest);
-        }
-
         return $newEloquentBuilder;
     }
 

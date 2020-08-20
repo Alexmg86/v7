@@ -2,7 +2,6 @@
 
 namespace Alexmg86\LaravelSubQuery;
 
-use Alexmg86\LaravelSubQuery\Collection\LaravelSubQueryCollection;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\QueriesRelationships;
