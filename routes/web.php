@@ -21,8 +21,11 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Route::get('/', function () {
 
+    $i = Invoice::like('name', 'пе')->get();
+    app('debugbar')->info($i->count());
+    // dd($i);
     // $invoices = Invoice::withSum('items:price')->remember(10 * 10)->sum('id');
-    $invoices = Invoice::withSum('items:price')->remember(10 * 10)->first();
+    // $invoices = Invoice::withSum('items:price')->remember(10 * 10)->first();
     // dd($invoices);
     // $countries = Country::remember(10 * 10)->count();
     // $countries->loadOneLatest('posts');

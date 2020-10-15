@@ -63,6 +63,22 @@ class LaravelSubQuery extends Builder
         return $this->withSubQuery($relations, 'avg');
     }
 
+    public function likeLeft($column, $value)
+    {
+        return $this->like($column, '%' . $value, true);
+    }
+
+    public function likeRight($column, $value)
+    {
+        return $this->like($column, $value . '%', true);
+    }
+
+    public function like($column, $value, $condition = false)
+    {
+        $value = $condition ? $value : '%' . $value . '%';
+        return $this->query->where($column, 'like', $value);
+    }
+
     public function orderByRelation($relations, $orderType = 'desc', $type = 'max')
     {
         if (is_array($relations)) {
