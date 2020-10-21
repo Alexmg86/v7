@@ -2,6 +2,7 @@
 
 namespace Alexmg86\LaravelSubQuery;
 
+use Alexmg86\LaravelSubQuery\Traits\LaravelSubQuerySugar;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\QueriesRelationships;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 
 class LaravelSubQuery extends Builder
 {
+    use LaravelSubQuerySugar;
     use QueriesRelationships;
 
     /**
@@ -61,22 +63,6 @@ class LaravelSubQuery extends Builder
     public function withAvg($relations)
     {
         return $this->withSubQuery($relations, 'avg');
-    }
-
-    public function likeLeft($column, $value)
-    {
-        return $this->like($column, '%' . $value, true);
-    }
-
-    public function likeRight($column, $value)
-    {
-        return $this->like($column, $value . '%', true);
-    }
-
-    public function like($column, $value, $condition = false)
-    {
-        $value = $condition ? $value : '%' . $value . '%';
-        return $this->query->where($column, 'like', $value);
     }
 
     public function orderByRelation($relations, $orderType = 'desc', $type = 'max')
