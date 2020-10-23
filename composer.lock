@@ -4,23 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ef886c7f8174538e97295fcef16f751",
+    "content-hash": "81071e2d4669f488cdbb6d0334d856a5",
     "packages": [
         {
             "name": "alexmg86/laravel-goodsru",
-            "version": "dev-master",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alexmg86/laravel-goodsru.git",
+                "reference": "13599a8be6ba997f89991dcaf8a23b973ef6caeb"
+            },
             "dist": {
-                "type": "path",
-                "url": "packages/alexmg86/laravel-goodsru",
-                "reference": "133928c2e3bcf96ff2eeb6701ae7d6e1dc79d545"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alexmg86/laravel-goodsru/zipball/13599a8be6ba997f89991dcaf8a23b973ef6caeb",
+                "reference": "13599a8be6ba997f89991dcaf8a23b973ef6caeb",
+                "shasum": ""
             },
             "require": {
-                "illuminate/support": "^6.0|^7.0",
-                "php": ">=7.2"
+                "illuminate/support": ">=5.4",
+                "php": ">=5.6.4"
             },
             "require-dev": {
-                "orchestra/testbench": "^4.0|^5.0",
-                "phpunit/phpunit": "^8.4|^9.0"
+                "orchestra/testbench": ">=3.1",
+                "phpunit/phpunit": ">=5.7"
             },
             "type": "library",
             "extra": {
@@ -35,33 +41,24 @@
                     "Alexmg86\\LaravelGoodsru\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Alexmg86\\LaravelGoodsru\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "phpunit": [
-                    "phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "",
-                    "email": ""
+                    "name": "Aleksei Morozov",
+                    "email": "alexmg86@mail.ru"
                 }
             ],
-            "description": "A laravel goodsru",
+            "description": "Laravel Goodsru API",
+            "homepage": "https://github.com/alexmg86/laravelgoodsru",
             "keywords": [
+                "api",
                 "goodsru",
                 "laravel"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "time": "2020-10-23T14:11:57+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -6517,9 +6514,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "alexmg86/laravel-goodsru": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
