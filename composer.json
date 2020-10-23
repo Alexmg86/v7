@@ -48,7 +48,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Alexmg86\\LaravelSubQuery\\": "packages/alexmg86/laravel-sub-query/src/"
+            "Alexmg86\\LaravelSubQuery\\": "packages/alexmg86/laravel-sub-query/src/",
+            "Alexmg86\\LaravelGoodsRu\\": "packages/alexmg86/laravel-goodsru/src/"
         }
     },
     "minimum-stability": "dev",
@@ -69,6 +70,10 @@
         {
             "type": "path",
             "url": "packages/alexmg86/laravel-sub-query"
+        },
+        {
+            "type": "path",
+            "url": "packages/alexmg86/laravel-goodsru"
         }
     ]
 }
