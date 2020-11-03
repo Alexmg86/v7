@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "alexmg86/laravel-goodsru": "^1.0",
+        "darkaonline/l5-swagger": "^8.0",
         "fico7489/laravel-eloquent-join": "^4.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
