@@ -12,6 +12,13 @@ It is also possible to sort by related models. And this sorting works with all t
 Added ability to load only one latest or oldest related model for each model without multiple queries.  
 I often use this in my work and I hope it will be useful to you!
 
+## Last added
+
+2020/12/10 - Added casting for withSum('items:price:signed') and others  
+2020/11/03 - Added method [withMath](https://github.com/Alexmg86/laravel-sub-query#working-with-columns)  
+2020/10/21 - Added [some sugar](https://github.com/Alexmg86/laravel-sub-query#sugar)  
+2020/10/06 - Added caching of [received data](https://github.com/Alexmg86/laravel-sub-query#caching)
+
 ## Say thank you
 
 If you liked this package, please give me a star.
@@ -46,6 +53,10 @@ echo $invoices[0]->items_price_sum;
 echo $invoices[0]->items_price_min;
 echo $invoices[0]->items_price_max;
 echo $invoices[0]->items_price_avg;
+```
+The resulting value can be casting through the third parameter. Some types for example: date, datetime, time, char, signed, unsigned, binary.
+```php
+$invoices = Invoice::withSum('items:price:signed')->get();
 ```
 ### The following methods apply to all methods!!!
 
@@ -110,6 +121,19 @@ By default, sorting is by `max` and `desc`, you can choose one of the options `m
 $invoices = Invoice::orderByRelation('items:price', 'asc', 'sum')->get();
 ```
 
+### Working with columns
+
+To add or multiply the required columns use this method:
+```php
+$items = Item::withMath(['invoice_id', 'price'])->get();
+echo $items[0]->sum_invoice_id_price;
+```
+Columns will be summed by default, you can choose one of the options `+`, `-`, `*`, `/` and set a new name.
+```php
+$items = Item::withMath(['invoice_id', 'price', 'price2'], '*', 'new_column')->get();
+echo $items[0]->new_column;
+```
+
 ### Load latest or oldest relation
 
 Imagine you want to get a list of 50 accounts, each with 100 items. By default, you will get 5000 positions and select the first ones for each account. PHP smokes nervously on the sidelines.  
@@ -141,3 +165,21 @@ $invoices->loadLimit(['items:2', 'goods:1' => function ($query) {
 }]);
 ```
 Note that first you write the name of the relation, and then the number of rows.
+
+### Caching
+
+For convenience, you can now cache the received data.
+```php
+// Get a the first user's posts and remember them for a day.
+Invoice::withSum('items:price')->remember(now()->addDay())->posts()->get();
+
+// You can also pass the number of seconds if you like
+// (before Laravel 5.8 this will be interpreted as minutes).
+Invoice::withSum('items:price')->remember(60 * 60 * 24)->get();
+```
+A more detailed description [is here](https://github.com/Alexmg86/laravel-sub-query/wiki/Cache)
+
+### Sugar
+
+I got tired of writing some things in detail and I decided to remove them in methods.  
+You can see [it here](https://github.com/Alexmg86/laravel-sub-query/wiki/Some-sugar)

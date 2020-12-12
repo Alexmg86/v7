@@ -82,7 +82,7 @@ trait LaravelSubQuerySugar
 
         $asName = implode('_', $columns);
         if ($name) {
-            $asName = $name . $asName;
+            $asName = $name;
         } elseif (array_key_exists($operator, $default)) {
             $asName = $default[$operator] . $asName;
         } else {
