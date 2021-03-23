@@ -1,19 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use PHPHtmlParser\Dom;
 
-class ParseController extends Controller
+class ParseSiteCommand extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'site:parse';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
     protected $inner = [];
     protected $urls = [];
     protected $mainUrl = 'https://www.bork.ru';
+    protected $count = 1;
 
-    public function index()
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $this->urls[] = $this->mainUrl;
 
@@ -28,7 +57,7 @@ class ParseController extends Controller
         }
     }
 
-    public function getName($url)
+    public function getFileName($url)
     {
         $urlWithoutParam = explode('?', $url);
         $filename = 'index.txt';
@@ -43,15 +72,13 @@ class ParseController extends Controller
 
     public function getByPage($url)
     {
-        $url = '/eShop/kitchen/';
-        $filename = $this->getName($url);
+        $filename = $this->getFileName($url);
+        
+        dump($this->count . ' : ' . $filename);
+        $this->count++;
 
         $dom = new Dom();
-        if ($this->mainUrl == $url) {
-            $dom->loadFromUrl($this->mainUrl);
-        } else {
-            $dom->loadFromUrl($this->mainUrl . $url);
-        }
+        $dom->loadFromUrl($this->mainUrl);
 
         if (isset($dom->find('title')[0])) {
             $this->inner[] = $dom->find('title')[0]->innerHtml;
@@ -85,25 +112,25 @@ class ParseController extends Controller
 
         $this->inner = [];
 
-        $links = $dom->find('a');
-        if (isset($links)) {
-            foreach ($links as $link) {
-                if (!$link->getTag()->hasAttribute('href')) {
-                    continue;
-                }
-                $tag = $link->getTag();
-                $href = $tag->getAttribute('href')->getValue();
+        // $links = $dom->find('a');
+        // if (isset($links)) {
+        //     foreach ($links as $link) {
+        //         if (!$link->getTag()->hasAttribute('href')) {
+        //             continue;
+        //         }
+        //         $tag = $link->getTag();
+        //         $href = $tag->getAttribute('href')->getValue();
 
-                if (substr($href, 0, 2) == '//' || substr($href, 0, 1) != '/') {
-                    continue;
-                }
+        //         if (substr($href, 0, 2) == '//' || substr($href, 0, 1) != '/') {
+        //             continue;
+        //         }
 
-                if (!in_array($href, $this->urls)) {
-                    $this->urls[] = $href;
-                    $this->getByPage($href);
-                }
-            }
-        }
+        //         if (!in_array($href, $this->urls)) {
+        //             $this->urls[] = $href;
+        //             $this->getByPage($href);
+        //         }
+        //     }
+        // }
     }
 
     public function getText($bodyItems)
