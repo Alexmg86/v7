@@ -118,8 +118,16 @@ trait LaravelSubQueryTrait
         if (isset($this->rememberCacheDriver)) {
             $builder->cacheDriver($this->rememberCacheDriver);
         }
-
+        $this->appends = [];
         return $builder;
+    }
+
+    public static function clearAp()
+    {
+        $model = new static();
+        $model->appends = [];
+        // $class = static::class;
+        return $model;
     }
 
     /**
@@ -131,6 +139,8 @@ trait LaravelSubQueryTrait
     public function newEloquentBuilder($builder)
     {
         $newEloquentBuilder = new LaravelSubQuery($builder);
+        $this->appends = [];
+        // dump($this);
         $newEloquentBuilder->setModel($this);
 
         if (isset($this->withSum)) {

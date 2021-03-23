@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+Route::get('parse', 'ParseController@index');
 
 
 Route::get('/', function () {
 
     // $invoices = Item::withMulti(['invoice_id', 'price', 'price2'], 'fff')->take(10)->get();
-    $invoices = Item::withMath(['invoice_id', 'price'])->take(10)->get();
+    return $invoices = Invoice::clearAp()->get();
+    return $invoices = Invoice::get();
     // $invoices = Invoice::withMath(['id', 'name'])->take(10)->get();
     // $invoices = Invoice::withCount('items')->take(10)->get();
     dd($invoices);
