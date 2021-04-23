@@ -17,10 +17,6 @@ class Invoice extends Model
         'full'
     ];
 
-    // protected $withCount = 'items';
-
-    // protected $withSum = ["items:price"];
-
     public function items()
     {
         return $this->hasMany('App\Item');

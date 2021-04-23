@@ -14,7 +14,7 @@ trait LaravelSubQueryTrait
      * @param  array|string  $relations
      * @return $this
      */
-    public function loadSum($relations)
+    public function loadSum($relations, $column = null)
     {
         $relations = is_string($relations) ? func_get_args() : $relations;
 
@@ -29,7 +29,7 @@ trait LaravelSubQueryTrait
      * @param  array|string  $relations
      * @return $this
      */
-    public function loadMin($relations)
+    public function loadMin($relations, $column = null)
     {
         $relations = is_string($relations) ? func_get_args() : $relations;
 
@@ -44,7 +44,7 @@ trait LaravelSubQueryTrait
      * @param  array|string  $relations
      * @return $this
      */
-    public function loadMax($relations)
+    public function loadMax($relations, $column = null)
     {
         $relations = is_string($relations) ? func_get_args() : $relations;
 
@@ -59,7 +59,7 @@ trait LaravelSubQueryTrait
      * @param  array|string  $relations
      * @return $this
      */
-    public function loadAvg($relations)
+    public function loadAvg($relations, $column = null)
     {
         $relations = is_string($relations) ? func_get_args() : $relations;
 
@@ -118,16 +118,8 @@ trait LaravelSubQueryTrait
         if (isset($this->rememberCacheDriver)) {
             $builder->cacheDriver($this->rememberCacheDriver);
         }
-        $this->appends = [];
-        return $builder;
-    }
 
-    public static function clearAp()
-    {
-        $model = new static();
-        $model->appends = [];
-        // $class = static::class;
-        return $model;
+        return $builder;
     }
 
     /**
@@ -139,8 +131,6 @@ trait LaravelSubQueryTrait
     public function newEloquentBuilder($builder)
     {
         $newEloquentBuilder = new LaravelSubQuery($builder);
-        $this->appends = [];
-        // dump($this);
         $newEloquentBuilder->setModel($this);
 
         if (isset($this->withSum)) {

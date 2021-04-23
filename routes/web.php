@@ -2,6 +2,7 @@
 
 use App\Invoice;
 use App\Item;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,12 +21,11 @@ Route::get('parse', 'ParseController@index');
 
 
 Route::get('/', function () {
+    $invoices = Invoice::whereCurrentYear()->count();
+    // dd($invoices);
 
-    // $invoices = Item::withMulti(['invoice_id', 'price', 'price2'], 'fff')->take(10)->get();
-    return $invoices = Invoice::clearAp()->get();
-    return $invoices = Invoice::get();
-    // $invoices = Invoice::withMath(['id', 'name'])->take(10)->get();
-    // $invoices = Invoice::withCount('items')->take(10)->get();
-    dd($invoices);
+    // $invoices = Invoice::withSum('items:price')->getLikeSql();
+    // dd($invoices);
     return view('welcome');
+    // return view('test', compact('invoices'));
 });
