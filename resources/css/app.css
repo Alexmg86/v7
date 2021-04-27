@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #edeef0;
+}
+
+.left-side {
+    background: #1a1a1a;
+    padding: 15px;
+    font-size: 10px;
+    width: 270px;
+    color: white;
+}
