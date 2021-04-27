@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 Route::get('parse', 'ParseController@index');
+Route::get('api', 'ApiTesterController@index');
 
 
 Route::get('/', function () {

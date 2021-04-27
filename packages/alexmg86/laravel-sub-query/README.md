@@ -3,6 +3,7 @@
 # Laravel Sub Query
 
 ![PHP Composer](https://github.com/Alexmg86/laravel-sub-query/workflows/PHP%20Composer/badge.svg)
+[![Total Downloads](https://poser.pugx.org/alexmg86/laravel-sub-query/downloads)](https://packagist.org/packages/alexmg86/laravel-sub-query)
 [![Latest Stable Version](https://poser.pugx.org/alexmg86/laravel-sub-query/v/stable)](https://packagist.org/packages/alexmg86/laravel-sub-query)
 [![License](https://poser.pugx.org/alexmg86/laravel-sub-query/license)](https://packagist.org/packages/alexmg86/laravel-sub-query)
 
@@ -131,6 +132,15 @@ Columns will be summed by default, you can choose one of the options `+`, `-`, `
 ```php
 $items = Item::withMath(['invoice_id', 'price', 'price2'], '*', 'new_column')->get();
 echo $items[0]->new_column;
+```
+
+### Working with dates
+
+A more convenient way to select by dates. By default, sorting is by `created_at`.
+```php
+$invoices = Invoice::whereCurrentYear('column_name')->get();
+$invoices = Invoice::whereCurrentMonth()->get();
+$invoices = Invoice::whereCurrentDay()->get();
 ```
 
 ### Load latest or oldest relation
