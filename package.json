@@ -15,8 +15,8 @@
         "axios": "^0.21",
         "laravel-mix": "^6.0.0-beta.17",
         "lodash": "^4.17.19",
-        "postcss": "^8.2.10",
-        "tailwindcss": "^2.1.1",
+        "postcss": "^8.2.13",
+        "tailwindcss": "^2.1.2",
         "vue": "^3.0.11",
         "vue-loader": "^16.2.0",
         "vue-template-compiler": "^2.6.12"

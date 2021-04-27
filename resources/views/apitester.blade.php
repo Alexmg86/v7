@@ -9,10 +9,8 @@
 </head>
 <body>
     <div id="app">
-        <index></index>
+        <index :projects="{{$projects}}"></index>
     </div>
-
-    <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

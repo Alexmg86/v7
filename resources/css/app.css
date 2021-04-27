@@ -1,5 +1,4 @@
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 body {
@@ -8,8 +7,91 @@ body {
 
 .left-side {
     background: #1a1a1a;
-    padding: 15px;
-    font-size: 10px;
+    font-size: 11px;
     width: 270px;
+    color: white;
+}
+
+.project-create {
+    margin: -15px;
+    cursor: pointer;
+}
+
+.project-create p {
+    font-size: 16px;
+    margin-top: 14px;
+}
+
+.input {
+    padding: 4px;
+    font-size: 12px;
+    width: 100%;
+    height: 36px;
+}
+
+.modal {
+    width: 300px;
+    padding: 15px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.modal-btn {
+    font-size: 12px;
+}
+
+.modal-btn:disabled {
+    opacity: 50%;
+}
+
+.project-list li {
+    line-height: 34px;
+    cursor: pointer;
+    position: relative;
+}
+
+.project-list li .level-1:hover {
+    background: #4e4e4e;
+}
+
+.project-list li .level-1 {
+    padding: 0 15px;
+}
+
+.dots-level-1 {
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    width: 34px;
+    height: 34px;
+}
+
+.project-list li:hover .dots-level-1 {
+    opacity: 100;
+}
+
+.menu-level-1 {
+    position: absolute;
+    right: 15px;
+    top: 34px;
+    background: white;
+    border-radius: 4px;
+    color: #555;
+    width: 130px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.menu-level-1 li {
+    padding: 5px 10px;
+    line-height: 14px;
+    white-space: nowrap;
+}
+
+.menu-level-1 li:hover {
+    background: #6cc7f3;
     color: white;
 }
