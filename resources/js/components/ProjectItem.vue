@@ -32,17 +32,23 @@
                 </svg>
                 add request
             </li>
+            <li class="flex items-center" @click="removeItem">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                remove
+            </li>
         </ul>
     </li>
 </template>
 
 <script>
     export default {
-        props: ['project', 'key', 'menuShow'],
+        props: ['project', 'index'],
         data() {
             return {
                 isClosed: true,
-                isMenu: this.menuShow
+                isMenu: false
             }
         },
         methods: {
@@ -50,15 +56,14 @@
                 this.isClosed = !this.isClosed
             },
             openMenu() {
-                console.log(this.key);
-                this.$emit('menuShowAction', this.key);
                 this.isMenu = !this.isMenu
+                // console.log(this.index);
+                this.$emit('menuShowAction', this.index);
+            },
+            removeItem() {
+                // this.$emit('removeAction', this.key, this.project.id);
+                this.openMenu();
             }
-        },
-        // watch: {
-        //     isMenu() {
-        //         this.isMenu = this.menuShow
-        //     }
-        // }
+        }
     }
 </script>

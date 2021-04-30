@@ -16605,12 +16605,21 @@ __webpack_require__.r(__webpack_exports__);
         action: 'createProject'
       }).then(function (response) {
         _this.projectsItems.push(response.data);
+
+        _this.modalVisible = false;
       });
     },
     menuShowAction: function menuShowAction(key) {
-      console.log(key);
-      console.log('menuShowAction');
-      this.menuShow = false;
+      if (this.menuShow != null && this.menuShow != key) {
+        // this.$refs['project-item-' + this.menuShow].isMenu = false;
+        this.$refs.projectsItems.isMenu = false;
+      }
+
+      this.menuShow = key;
+    },
+    removeAction: function removeAction(key, id) {
+      this.projectsItems.splice(key, 1); // this.projectsItems = this.projectsItems.filter((e) => e.id !== id )
+      // this.menuShow = null;
     },
     modalShow: function modalShow() {
       this.modalVisible = !this.modalVisible;
@@ -16632,11 +16641,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['project', 'key', 'menuShow'],
+  props: ['project', 'index'],
   data: function data() {
     return {
       isClosed: true,
-      isMenu: this.menuShow
+      isMenu: false
     };
   },
   methods: {
@@ -16644,16 +16653,15 @@ __webpack_require__.r(__webpack_exports__);
       this.isClosed = !this.isClosed;
     },
     openMenu: function openMenu() {
-      console.log(this.key);
-      this.$emit('menuShowAction', this.key);
-      this.isMenu = !this.isMenu;
-    }
-  } // watch: {
-  //     isMenu() {
-  //         this.isMenu = this.menuShow
-  //     }
-  // }
+      this.isMenu = !this.isMenu; // console.log(this.index);
 
+      this.$emit('menuShowAction', this.index);
+    },
+    removeItem: function removeItem() {
+      // this.$emit('removeAction', this.key, this.project.id);
+      this.openMenu();
+    }
+  }
 });
 
 /***/ }),
@@ -16784,14 +16792,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [_hoisted_11, _hoisted_12]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.projectsItems, function (project, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_project_item, {
       project: project,
-      key: index,
+      index: index,
       onMenuShowAction: $options.menuShowAction,
-      ref: 'project-item-' + index
+      onRemoveAction: $options.removeAction,
+      ref: "projectsItems"
     }, null, 8
     /* PROPS */
-    , ["project", "onMenuShowAction"]);
-  }), 128
-  /* KEYED_FRAGMENT */
+    , ["project", "index", "onMenuShowAction", "onRemoveAction"]);
+  }), 256
+  /* UNKEYED_FRAGMENT */
   ))]))])]);
 }
 
@@ -16906,6 +16915,23 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-3 w-3 mr-1",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" remove ");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "level-1 flex items-center",
@@ -16919,7 +16945,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.openMenu && $options.openMenu.apply($options, arguments);
     })
-  }, [_hoisted_7])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_8, [_hoisted_9, _hoisted_10], 512
+  }, [_hoisted_7])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_8, [_hoisted_9, _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    "class": "flex items-center",
+    onClick: _cache[3] || (_cache[3] = function () {
+      return $options.removeItem && $options.removeItem.apply($options, arguments);
+    })
+  }, [_hoisted_11, _hoisted_12])], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.isMenu]])]);
 }

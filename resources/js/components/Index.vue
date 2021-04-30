@@ -38,9 +38,10 @@
                 <project-item 
                     v-for="(project, index) in projectsItems"
                     :project="project"
-                    :key="index"
+                    :index="index"
                     v-on:menuShowAction="menuShowAction"
-                    :ref="'project-item-' + index"
+                    v-on:removeAction="removeAction"
+                    ref="projectsItems"
                 ></project-item>
             </ul>
         </div>
@@ -71,12 +72,20 @@
                 })
                 .then(response => {
                     this.projectsItems.push(response.data);
+                    this.modalVisible = false;
                 });
             },
             menuShowAction(key) {
-                console.log(key);
-                console.log('menuShowAction');
-                this.menuShow = false;
+                if (this.menuShow != null && this.menuShow != key) {
+                    // this.$refs['project-item-' + this.menuShow].isMenu = false;
+                    this.$refs.projectsItems.isMenu = false;
+                }
+                this.menuShow = key;
+            },
+            removeAction(key, id) {
+                this.projectsItems.splice(key, 1);
+                // this.projectsItems = this.projectsItems.filter((e) => e.id !== id )
+                // this.menuShow = null;
             },
             modalShow() {
                 this.modalVisible = !this.modalVisible
