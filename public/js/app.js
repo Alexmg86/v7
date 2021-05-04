@@ -16655,9 +16655,18 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$emit('renameAction', type, item);
     },
-    removeItem: function removeItem() {
-      this.$emit('removeAction', this.project.id);
-      this.openMenu();
+    removeAction: function removeAction(type, item) {
+      if (!item) {
+        item = this.folder;
+        type = 'folder';
+        this.openMenu();
+      } else {
+        this.requestItems = this.requestItems.filter(function (e) {
+          return e.id !== item.id;
+        });
+      }
+
+      this.$emit('removeAction', type, item);
     }
   },
   watch: {
@@ -16801,7 +16810,6 @@ __webpack_require__.r(__webpack_exports__);
       this.modalShow(type);
     },
     renameAction: function renameAction(type, item, projectId) {
-      console.log(type);
       this.modalShow(type, item.name);
       this.isEdit = true;
 
@@ -16820,9 +16828,17 @@ __webpack_require__.r(__webpack_exports__);
         this.selectedRequest = item.id;
       }
     },
-    removeAction: function removeAction(id) {
-      this.projectsItems = this.projectsItems.filter(function (e) {
-        return e.id !== id;
+    removeAction: function removeAction(type, item, projectId) {
+      if (type == 'project') {
+        this.projectsItems = this.projectsItems.filter(function (e) {
+          return e.id !== item.id;
+        });
+      }
+
+      axios.post('/api', {
+        id: item.id,
+        type: type,
+        action: 'deleteItem'
       });
     },
     modalShow: function modalShow(value, name) {
@@ -16939,9 +16955,24 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$emit('renameAction', type, item, this.project.id);
     },
-    removeItem: function removeItem() {
-      this.$emit('removeAction', this.project.id);
-      this.openMenu();
+    removeAction: function removeAction(type, item) {
+      if (!item) {
+        item = this.project;
+        type = 'project';
+        this.openMenu();
+      } else {
+        if (type == 'folder') {
+          this.folderItems = this.folderItems.filter(function (e) {
+            return e.id !== item.id;
+          });
+        } else if (type == 'request') {
+          this.requestItems = this.requestItems.filter(function (e) {
+            return e.id !== item.id;
+          });
+        }
+      }
+
+      this.$emit('removeAction', type, item, this.project.id);
     }
   },
   watch: {
@@ -16987,6 +17018,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     renameAction: function renameAction() {
       this.$emit('renameAction', 'request', this.request);
+      this.openMenu();
+    },
+    removeAction: function removeAction() {
+      this.$emit('removeAction', 'request', this.request);
       this.openMenu();
     }
   }
@@ -17152,7 +17187,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.openLevel && $options.openLevel.apply($options, arguments);
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_2, [this.requestItems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_3, [$data.isClosed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("path", _hoisted_4)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("path", _hoisted_5))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.folder.name) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.index), 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_2, [this.requestItems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_3, [$data.isClosed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("path", _hoisted_4)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("path", _hoisted_5))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.folder.name), 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
     "class": "dots-level-2 flex items-center justify-center",
@@ -17165,17 +17200,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onMenuShowAction: $options.openMenu,
     onMenuAddRequest: $options.addRequest,
     onRenameAction: $options.renameAction,
-    onRemoveAction: $options.removeItem
+    onRemoveAction: $options.removeAction
   }, null, 8
   /* PROPS */
   , ["isMenu", "onMenuShowAction", "onMenuAddRequest", "onRenameAction", "onRemoveAction"]), !$data.isClosed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_9, [this.requestItems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.requestItems, function (request, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_request_item, {
       request: request,
       index: index,
-      onRenameAction: $options.renameAction
+      onRenameAction: $options.renameAction,
+      onRemoveAction: $options.removeAction
     }, null, 8
     /* PROPS */
-    , ["request", "index", "onRenameAction"]);
+    , ["request", "index", "onRenameAction", "onRemoveAction"]);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
@@ -17518,7 +17554,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onMenuAddAction: $options.addFolder,
     onMenuAddRequest: $options.addRequest,
     onRenameAction: $options.renameAction,
-    onRemoveAction: $options.removeItem
+    onRemoveAction: $options.removeAction
   }, null, 8
   /* PROPS */
   , ["isMenu", "onMenuShowAction", "onMenuAddAction", "onMenuAddRequest", "onRenameAction", "onRemoveAction"]), !$data.isClosed ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_9, [this.folderItems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.folderItems, function (folder, index) {
@@ -17526,10 +17562,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       folder: folder,
       index: index,
       onMenuAddRequest: $options.addRequest,
-      onRenameAction: $options.renameAction
+      onRenameAction: $options.renameAction,
+      onRemoveAction: $options.removeAction
     }, null, 8
     /* PROPS */
-    , ["folder", "index", "onMenuAddRequest", "onRenameAction"]);
+    , ["folder", "index", "onMenuAddRequest", "onRenameAction", "onRemoveAction"]);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.requestItems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_11, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.requestItems, function (request, index) {
@@ -17537,10 +17574,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       request: request,
       index: index,
       onMenuAddRequest: $options.addRequest,
-      onRenameAction: $options.renameAction
+      onRenameAction: $options.renameAction,
+      onRemoveAction: $options.removeAction
     }, null, 8
     /* PROPS */
-    , ["request", "index", "onMenuAddRequest", "onRenameAction"]);
+    , ["request", "index", "onMenuAddRequest", "onRenameAction", "onRemoveAction"]);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
@@ -17627,10 +17665,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isFolder: true,
     isRequest: true,
     onMenuShowAction: $options.openMenu,
-    onRenameAction: $options.renameAction
+    onRenameAction: $options.renameAction,
+    onRemoveAction: $options.removeAction
   }, null, 8
   /* PROPS */
-  , ["isMenu", "onMenuShowAction", "onRenameAction"])]);
+  , ["isMenu", "onMenuShowAction", "onRenameAction", "onRemoveAction"])]);
 }
 
 /***/ }),

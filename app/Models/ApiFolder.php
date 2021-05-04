@@ -14,6 +14,14 @@ class ApiFolder extends Model
 
     protected $with = ['items'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($folder) {
+            $folder->items()->delete();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany('App\Models\ApiItem', 'folder_id');

@@ -28,7 +28,7 @@
         v-on:menuAddAction="addFolder"
         v-on:menuAddRequest="addRequest"
         v-on:renameAction="renameAction"
-        v-on:removeAction="removeItem"
+        v-on:removeAction="removeAction"
         ></menu-list>
         <div v-if="!isClosed">
             <ul class="folder-list" v-if="this.folderItems.length > 0">
@@ -38,6 +38,7 @@
                 :index="index"
                 v-on:menuAddRequest="addRequest"
                 v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
                 ></folder-item>
             </ul>
             <ul class="folder-list" v-if="this.requestItems.length > 0">
@@ -47,6 +48,7 @@
                 :index="index"
                 v-on:menuAddRequest="addRequest"
                 v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
                 ></request-item>
             </ul>
         </div>
@@ -98,9 +100,19 @@
                 }
                 this.$emit('renameAction', type, item, this.project.id);
             },
-            removeItem() {
-                this.$emit('removeAction', this.project.id);
-                this.openMenu();
+            removeAction(type, item) {
+                if (!item) {
+                    item = this.project;
+                    type = 'project';
+                    this.openMenu();
+                } else {
+                    if (type == 'folder') {
+                        this.folderItems = this.folderItems.filter((e) => e.id !== item.id );
+                    } else if (type == 'request') {
+                        this.requestItems = this.requestItems.filter((e) => e.id !== item.id );
+                    }
+                }
+                this.$emit('removeAction', type, item, this.project.id);
             }
         },
         watch: {

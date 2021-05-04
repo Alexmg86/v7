@@ -13,7 +13,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                     </svg>
                 </span>
-                <span class="ml-1">{{folder.name}} - {{index}}</span>
+                <span class="ml-1">{{folder.name}}</span>
             </div>
             
             <span class="dots-level-2 flex items-center justify-center" @click="openMenu">
@@ -28,7 +28,7 @@
             v-on:menuShowAction="openMenu"
             v-on:menuAddRequest="addRequest"
             v-on:renameAction="renameAction"
-            v-on:removeAction="removeItem"
+            v-on:removeAction="removeAction"
         ></menu-list>
         <div v-if="!isClosed">
             <ul class="request-list" v-if="this.requestItems.length > 0">
@@ -37,6 +37,7 @@
                 :request="request"
                 :index="index"
                 v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
                 ></request-item>
             </ul>
         </div>
@@ -79,9 +80,15 @@
                 }
                 this.$emit('renameAction', type, item);
             },
-            removeItem() {
-                this.$emit('removeAction', this.project.id);
-                this.openMenu();
+            removeAction(type, item) {
+                if (!item) {
+                    item = this.folder;
+                    type = 'folder';
+                    this.openMenu();
+                } else {
+                    this.requestItems = this.requestItems.filter((e) => e.id !== item.id );
+                }
+                this.$emit('removeAction', type, item);
             }
         },
         watch: {

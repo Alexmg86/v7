@@ -24,6 +24,7 @@
             :isRequest="true"
             v-on:menuShowAction="openMenu"
             v-on:renameAction="renameAction"
+            v-on:removeAction="removeAction"
         ></menu-list>
     </li>
 </template>
@@ -51,6 +52,10 @@
             },
             renameAction() {
                 this.$emit('renameAction', 'request', this.request);
+                this.openMenu();
+            },
+            removeAction() {
+                this.$emit('removeAction', 'request', this.request);
                 this.openMenu();
             }
         }

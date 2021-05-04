@@ -55,4 +55,20 @@ class ApiTesterController extends Controller
         }
         return $item;
     }
+
+    public function deleteItem(Request $request)
+    {
+        switch ($request->type) {
+            case 'project':
+                $item = ApiProject::find($request->id);
+                break;
+            case 'folder':
+                $item = ApiFolder::find($request->id);
+                break;
+            case 'request':
+                $item = ApiItem::find($request->id);
+                break;
+        }
+        $item->delete();
+    }
 }

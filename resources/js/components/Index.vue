@@ -143,7 +143,6 @@
                 this.modalShow(type);
             },
             renameAction(type, item, projectId) {
-                console.log(type);
                 this.modalShow(type, item.name);
                 this.isEdit = true;
                 if (type == 'project') {
@@ -159,8 +158,15 @@
                     this.selectedRequest = item.id;
                 }
             },
-            removeAction(id) {
-                this.projectsItems = this.projectsItems.filter((e) => e.id !== id );
+            removeAction(type, item, projectId) {
+                if (type == 'project') {
+                    this.projectsItems = this.projectsItems.filter((e) => e.id !== item.id );
+                }
+                axios.post('/api', {
+                    id: item.id,
+                    type: type,
+                    action: 'deleteItem'
+                });
             },
             modalShow(value, name) {
                 this.modalVisible = !this.modalVisible;

@@ -14,6 +14,15 @@ class ApiProject extends Model
 
     protected $with = ['folders', 'items'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($project) {
+            $project->folders()->delete();
+            $project->items()->delete();
+        });
+    }
+
     public function folders()
     {
         return $this->hasMany('App\Models\ApiFolder', 'project_id', 'id');
