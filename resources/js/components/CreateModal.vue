@@ -2,7 +2,7 @@
     <div v-if="modalVisible" v-click-outside="modalShow" class="h-screen w-full absolute flex items-center justify-center bg-modal">
         <div class="bg-white rounded shadow modal text-center">
             <div class="mb-8">
-                <p class="modal-title">Create {{modalTitle}}!</p>
+                <p class="modal-title">{{title}}!</p>
             </div>
             <div class="mb-8">
                 <input class="input border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -24,10 +24,19 @@
 
 <script>
     export default {
-        props: ['modalVisible', 'modalTitle'],
+        props: ['modalVisible', 'modalTitle', 'isEdit'],
         data() {
             return {
                 value: ''
+            }
+        },
+        computed: {
+            title: function () {
+                var title = 'Create ';
+                if (this.isEdit) {
+                    title = 'Rename ';
+                }
+                return title + this.modalTitle
             }
         },
         methods: {

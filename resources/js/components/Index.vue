@@ -4,6 +4,7 @@
             ref="modal"
             :modalVisible="modalVisible"
             :modalTitle="modalTitle"
+            :isEdit="isEdit"
             v-on:createSomething="createSomething"
             v-on:modalShow="modalShow"
         ></create-modal>
@@ -80,13 +81,13 @@
                 })
                 .then(response => {
                     if (type == 'project') {
-                        this.newProject(response.data);
+                        this.createOrUpdateProject(response.data);
                     }
                     if (type == 'folder') {
-                        this.newFolder(response.data);
+                        this.createOrUpdateFolder(response.data);
                     }
                     if (type == 'request') {
-                        this.newRequest(response.data);
+                        this.createOrUpdateRequest(response.data);
                     }
                     this.$nextTick(function () {
                         this.clearSelected();
@@ -94,48 +95,55 @@
                 });
                 this.modalShow();
             },
-            newProject(data) {
+            createOrUpdateProject(data) {
                 if (this.isEdit) {
-                    let projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
-                    this.projectsItems[projectIndex] = data;
+                    this.projectsItems[this.getProjectIndex()] = data;
                 } else {
                     this.projectsItems.push(data);
                 }
             },
-            newFolder(data) {
-                var project = _.find(this.projectsItems, ['id', this.selectedProject]);
-                let projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
+            createOrUpdateFolder(data) {
+                var project = this.getProject();
                 if (this.isEdit) {
-                    let folderIndex = _.findIndex(project.folders, ['id', this.selectedFolder]);
-                    project.folders[folderIndex] = data;
+                    project.folders[this.getFolderIndex(project)] = data;
                 } else {
                     project.folders.push(data);
                 }
-                this.projectsItems[projectIndex] = project;
+                this.projectsItems[this.getProjectIndex()] = project;
             },
-            newRequest(data) {
-                var project = _.find(this.projectsItems, ['id', this.selectedProject]);
-                let projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
-
+            createOrUpdateRequest(data) {
+                var project = this.getProject();
                 if (this.selectedFolder) {
-                    var folder = _.find(project.folders, ['id', this.selectedFolder]);
-                    let folderIndex = _.findIndex(project.folders, ['id', this.selectedFolder]);
+                    var folder = this.getFolder(project);
                     if (this.isEdit) {
-                        let itemIndex = _.findIndex(folder.items, ['id', this.selectedRequest]);
-                        folder.items[itemIndex] = data;
+                        folder.items[this.getItemIndex(folder)] = data;
                     } else {
                         folder.items.push(data);
                     }
-                    project.folders[folderIndex] = folder;
+                    project.folders[this.getFolderIndex(project)] = folder;
                 } else {
                     if (this.isEdit) {
-                        let itemIndex = _.findIndex(project.items, ['id', this.selectedRequest]);
-                        project.items[itemIndex] = data;
+                        project.items[this.getItemIndex(project)] = data;
                     } else {
                         project.items.push(data);
                     }
                 }
-                this.projectsItems[projectIndex] = project;
+                this.projectsItems[this.getProjectIndex()] = project;
+            },
+            getItemIndex(parent) {
+                return _.findIndex(parent.items, ['id', this.selectedRequest]);
+            },
+            getFolder(project) {
+                return _.find(project.folders, ['id', this.selectedFolder]);
+            },
+            getFolderIndex(project) {
+                return _.findIndex(project.folders, ['id', this.selectedFolder]);
+            },
+            getProject() {
+                return _.find(this.projectsItems, ['id', this.selectedProject]);
+            },
+            getProjectIndex() {
+                return _.findIndex(this.projectsItems, ['id', this.selectedProject]);
             },
             addAction(type, projectId, folderId) {
                 this.selectedProject = projectId;

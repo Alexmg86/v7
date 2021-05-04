@@ -16582,11 +16582,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['modalVisible', 'modalTitle'],
+  props: ['modalVisible', 'modalTitle', 'isEdit'],
   data: function data() {
     return {
       value: ''
     };
+  },
+  computed: {
+    title: function title() {
+      var title = 'Create ';
+
+      if (this.isEdit) {
+        title = 'Rename ';
+      }
+
+      return title + this.modalTitle;
+    }
   },
   methods: {
     clearValue: function clearValue() {
@@ -16732,15 +16743,15 @@ __webpack_require__.r(__webpack_exports__);
         action: 'createOrUpdateItem'
       }).then(function (response) {
         if (type == 'project') {
-          _this.newProject(response.data);
+          _this.createOrUpdateProject(response.data);
         }
 
         if (type == 'folder') {
-          _this.newFolder(response.data);
+          _this.createOrUpdateFolder(response.data);
         }
 
         if (type == 'request') {
-          _this.newRequest(response.data);
+          _this.createOrUpdateRequest(response.data);
         }
 
         _this.$nextTick(function () {
@@ -16749,60 +16760,61 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.modalShow();
     },
-    newProject: function newProject(data) {
+    createOrUpdateProject: function createOrUpdateProject(data) {
       if (this.isEdit) {
-        var projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
-
-        this.projectsItems[projectIndex] = data;
+        this.projectsItems[this.getProjectIndex()] = data;
       } else {
         this.projectsItems.push(data);
       }
     },
-    newFolder: function newFolder(data) {
-      var project = _.find(this.projectsItems, ['id', this.selectedProject]);
-
-      var projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
+    createOrUpdateFolder: function createOrUpdateFolder(data) {
+      var project = this.getProject();
 
       if (this.isEdit) {
-        var folderIndex = _.findIndex(project.folders, ['id', this.selectedFolder]);
-
-        project.folders[folderIndex] = data;
+        project.folders[this.getFolderIndex(project)] = data;
       } else {
         project.folders.push(data);
       }
 
-      this.projectsItems[projectIndex] = project;
+      this.projectsItems[this.getProjectIndex()] = project;
     },
-    newRequest: function newRequest(data) {
-      var project = _.find(this.projectsItems, ['id', this.selectedProject]);
-
-      var projectIndex = _.findIndex(this.projectsItems, ['id', this.selectedProject]);
+    createOrUpdateRequest: function createOrUpdateRequest(data) {
+      var project = this.getProject();
 
       if (this.selectedFolder) {
-        var folder = _.find(project.folders, ['id', this.selectedFolder]);
-
-        var folderIndex = _.findIndex(project.folders, ['id', this.selectedFolder]);
+        var folder = this.getFolder(project);
 
         if (this.isEdit) {
-          var itemIndex = _.findIndex(folder.items, ['id', this.selectedRequest]);
-
-          folder.items[itemIndex] = data;
+          folder.items[this.getItemIndex(folder)] = data;
         } else {
           folder.items.push(data);
         }
 
-        project.folders[folderIndex] = folder;
+        project.folders[this.getFolderIndex(project)] = folder;
       } else {
         if (this.isEdit) {
-          var _itemIndex = _.findIndex(project.items, ['id', this.selectedRequest]);
-
-          project.items[_itemIndex] = data;
+          project.items[this.getItemIndex(project)] = data;
         } else {
           project.items.push(data);
         }
       }
 
-      this.projectsItems[projectIndex] = project;
+      this.projectsItems[this.getProjectIndex()] = project;
+    },
+    getItemIndex: function getItemIndex(parent) {
+      return _.findIndex(parent.items, ['id', this.selectedRequest]);
+    },
+    getFolder: function getFolder(project) {
+      return _.find(project.folders, ['id', this.selectedFolder]);
+    },
+    getFolderIndex: function getFolderIndex(project) {
+      return _.findIndex(project.folders, ['id', this.selectedFolder]);
+    },
+    getProject: function getProject() {
+      return _.find(this.projectsItems, ['id', this.selectedProject]);
+    },
+    getProjectIndex: function getProjectIndex() {
+      return _.findIndex(this.projectsItems, ['id', this.selectedProject]);
     },
     addAction: function addAction(type, projectId, folderId) {
       this.selectedProject = projectId;
@@ -17064,7 +17076,7 @@ var _hoisted_6 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _directive_click_outside = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective)("click-outside");
 
-  return $props.modalVisible ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_4, "Create " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle) + "!", 1
+  return $props.modalVisible ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.title) + "!", 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "input border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-200",
@@ -17293,11 +17305,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ref: "modal",
     modalVisible: $data.modalVisible,
     modalTitle: $data.modalTitle,
+    isEdit: $data.isEdit,
     onCreateSomething: $options.createSomething,
     onModalShow: $options.modalShow
   }, null, 8
   /* PROPS */
-  , ["modalVisible", "modalTitle", "onCreateSomething", "onModalShow"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [$data.projectsItems.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+  , ["modalVisible", "modalTitle", "isEdit", "onCreateSomething", "onModalShow"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [$data.projectsItems.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
     key: 0,
     "class": "project-create flex flex-col items-center justify-center h-screen",
     onClick: _cache[1] || (_cache[1] = function ($event) {
