@@ -95,6 +95,14 @@
             folder: function (val) {
                 this.requestItems = val.items
             }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                let open = JSON.parse(localStorage.getItem('apitester-selected'));
+                if (this.folder.id == open.folder_id) {
+                    this.isClosed = false;
+                }
+            })
         }
     }
 </script>

@@ -16684,6 +16684,15 @@ __webpack_require__.r(__webpack_exports__);
     folder: function folder(val) {
       this.requestItems = val.items;
     }
+  },
+  mounted: function mounted() {
+    this.$nextTick(function () {
+      var open = JSON.parse(localStorage.getItem('apitester-selected'));
+
+      if (this.folder.id == open.folder_id) {
+        this.isClosed = false;
+      }
+    });
   }
 });
 
@@ -16992,6 +17001,15 @@ __webpack_require__.r(__webpack_exports__);
       this.folderItems = val.folders;
       this.requestItems = val.items;
     }
+  },
+  mounted: function mounted() {
+    this.$nextTick(function () {
+      var open = JSON.parse(localStorage.getItem('apitester-selected'));
+
+      if (this.project.id == open.project_id) {
+        this.isClosed = false;
+      }
+    });
   }
 });
 
@@ -17017,13 +17035,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      isClosed: true,
+      isSelected: false,
       isMenu: false
     };
   },
   methods: {
-    openLevel: function openLevel() {
-      this.isClosed = !this.isClosed;
+    selectItem: function selectItem() {
+      this.isSelected = !this.isSelected;
+      localStorage.setItem('apitester-selected', JSON.stringify(this.request));
     },
     openMenu: function openMenu() {
       this.isMenu = !this.isMenu;
@@ -17036,6 +17055,16 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('removeAction', 'request', this.request);
       this.openMenu();
     }
+  },
+  mounted: function mounted() {
+    this.$nextTick(function () {
+      var open = JSON.parse(localStorage.getItem('apitester-selected'));
+
+      if (this.request.id == open.id) {
+        console.log(open.id);
+        this.isSelected = true;
+      }
+    });
   }
 });
 
@@ -17612,17 +17641,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "level-2"
-};
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "icon"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "icon"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -17639,11 +17665,11 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "ml-1"
 };
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-3 w-3",
   fill: "none",
@@ -17661,19 +17687,23 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_menu_list = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("menu-list");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": [$data.isSelected ? 'level-2 selected' : 'level-2']
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "flex items-center",
     onClick: _cache[1] || (_cache[1] = function () {
-      return $options.openLevel && $options.openLevel.apply($options, arguments);
+      return $options.selectItem && $options.selectItem.apply($options, arguments);
     })
-  }, [_hoisted_2, _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.request.name), 1
+  }, [_hoisted_1, _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.request.name), 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
     "class": "dots-level-2 flex items-center justify-center",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.openMenu && $options.openMenu.apply($options, arguments);
     })
-  }, [_hoisted_5])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_menu_list, {
+  }, [_hoisted_4])], 2
+  /* CLASS */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_menu_list, {
     isMenu: $data.isMenu,
     isFolder: true,
     isRequest: true,

@@ -1,7 +1,7 @@
 <template>
     <li>
-        <div class="level-2">
-            <div class="flex items-center" @click="openLevel">
+        <div v-bind:class="[isSelected ? 'level-2 selected' : 'level-2']">
+            <div class="flex items-center" @click="selectItem">
                 <span class="icon">
                 </span>
                 <span class="icon">
@@ -39,13 +39,14 @@
         },
         data() {
             return {
-                isClosed: true,
+                isSelected: false,
                 isMenu: false
             }
         },
         methods: {
-            openLevel() {
-                this.isClosed = !this.isClosed
+            selectItem() {
+                this.isSelected = !this.isSelected
+                localStorage.setItem('apitester-selected', JSON.stringify(this.request));
             },
             openMenu() {
                 this.isMenu = !this.isMenu
@@ -58,6 +59,15 @@
                 this.$emit('removeAction', 'request', this.request);
                 this.openMenu();
             }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                let open = JSON.parse(localStorage.getItem('apitester-selected'));
+                if (this.request.id == open.id) {
+                    console.log(open.id);
+                    this.isSelected = true;
+                }
+            })
         }
     }
 </script>

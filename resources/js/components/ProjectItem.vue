@@ -120,6 +120,14 @@
                 this.folderItems = val.folders
                 this.requestItems = val.items
             }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                let open = JSON.parse(localStorage.getItem('apitester-selected'));
+                if (this.project.id == open.project_id) {
+                    this.isClosed = false;
+                }
+            })
         }
     }
 </script>

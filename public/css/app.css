@@ -31858,6 +31858,10 @@ body {
   background: #4e4e4e;
 }
 
+.project-list li .folder-list li .level-2.selected {
+  background: #4e4e4e;
+}
+
 .project-list li .level-1 {
   padding: 0 15px;
 }
