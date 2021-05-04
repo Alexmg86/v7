@@ -31806,6 +31806,7 @@ body {
   font-size: 11px;
   width: 270px;
   color: white;
+  z-index: 2;
 }
 
 .project-create {
@@ -31844,7 +31845,7 @@ body {
 }
 
 .project-list li {
-  line-height: 34px;
+  line-height: 26px;
   cursor: pointer;
   position: relative;
 }
@@ -31853,32 +31854,53 @@ body {
   background: #4e4e4e;
 }
 
+.project-list li .folder-list li .level-2:hover {
+  background: #4e4e4e;
+}
+
 .project-list li .level-1 {
   padding: 0 15px;
 }
 
-.dots-level-1 {
-  position: absolute;
-  right: 0;
-  opacity: 0;
-  width: 34px;
-  height: 34px;
+.project-list li .folder-list li .level-2 {
+  padding: 0 15px 0 25px;
 }
 
-.project-list li:hover .dots-level-1 {
+.project-list li .request-list li .level-2 {
+  padding: 0 15px 0 40px;
+}
+
+.dots-level-1, .dots-level-2 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  width: 34px;
+  height: 26px;
+}
+
+.project-list li .level-1:hover .dots-level-1 {
   opacity: 100;
+}
+
+.project-list li .folder-list li .level-2:hover .dots-level-2 {
+  opacity: 100;
+}
+
+.project-list li .icon {
+  width: 12px;
 }
 
 .menu-level-1 {
   position: absolute;
   right: 15px;
-  top: 34px;
+  top: 26px;
   background: white;
   border-radius: 4px;
   color: #555;
-  width: 130px;
+  width: 126px;
   overflow: hidden;
-  z-index: 2;
+  z-index: 3;
 }
 
 .menu-level-1 li {

@@ -12,10 +12,15 @@ class ApiProject extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $with = ['folders'];
+    protected $with = ['folders', 'items'];
 
     public function folders()
     {
-        return $this->hasMany('App\Models\ApiFolder', 'project_id');
+        return $this->hasMany('App\Models\ApiFolder', 'project_id', 'id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany('App\Models\ApiItem', 'project_id', 'id')->whereNull('folder_id');
     }
 }

@@ -8,5 +8,12 @@ class ApiItem extends Model
 {
     protected $table = 'apitester_item';
 
-    protected $fillable = ['folder_id', 'name', 'body'];
+    protected $fillable = [
+        'folder_id',
+        'project_id',
+        'name',
+        'body'
+    ];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

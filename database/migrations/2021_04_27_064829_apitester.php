@@ -28,7 +28,8 @@ class Apitester extends Migration
 
         Schema::create('apitester_item', function (Blueprint $table) {
             $table->id();
-            $table->integer('folder_id')->index();
+            $table->integer('folder_id')->index()->nullable();
+            $table->integer('project_id')->index()->nullable();
             $table->string('name');
             $table->text('body');
             $table->timestamps();
