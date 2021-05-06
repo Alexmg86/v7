@@ -16921,6 +16921,43 @@ __webpack_require__.r(__webpack_exports__);
           this.openRequest = _.find(project.items, ['id', opened.id]);
         }
       }
+    },
+    updateRequest: function updateRequest(item, body) {
+      var _this3 = this;
+
+      axios.post('/api', {
+        id: item.id,
+        body: body,
+        action: 'updateItem'
+      }).then(function (response) {
+        var data = response.data;
+
+        var project = _.find(_this3.projectsItems, ['id', item.project_id]);
+
+        if (item.folder_id) {
+          var folder = _.find(project.folders, ['id', item.folder_id]);
+
+          var itemIndex = _.findIndex(folder.items, ['id', item.id]);
+
+          var folderIndex = _.findIndex(project.folders, ['id', item.folder_id]);
+
+          folder.items[itemIndex] = data;
+
+          _this3.openRightBar(data);
+
+          project.folders[folderIndex] = folder;
+        } else {
+          var _itemIndex = _.findIndex(project.items, ['id', item.id]);
+
+          project.items[_itemIndex] = data;
+
+          _this3.openRightBar(data);
+        }
+
+        var projectIndex = _.findIndex(_this3.projectsItems, ['id', item.project_id]);
+
+        _this3.projectsItems[projectIndex] = project;
+      });
     }
   },
   mounted: function mounted() {
@@ -17141,13 +17178,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       options: ['GET', 'POST', 'DELETE'],
-      selectedUrl: this.item.url,
       isChanged: false
     };
   },
   methods: {
-    sendRequest: function sendRequest() {
-      console.log(this.$refs['selectList'].selectedValue);
+    updateRequest: function updateRequest() {
+      var body = {
+        'method': this.$refs['selectList'].selectedValue,
+        'url': this.$refs['selectUrl'].value
+      };
+      this.$emit('updateRequest', this.item, body);
     }
   }
 });
@@ -17183,6 +17223,11 @@ __webpack_require__.r(__webpack_exports__);
     getValue: function getValue(id) {
       this.selectedValue = id;
       this.openMenu();
+    }
+  },
+  watch: {
+    selected: function selected(val) {
+      this.selectedValue = val;
     }
   }
 });
@@ -17489,10 +17534,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* UNKEYED_FRAGMENT */
   ))]))]), $data.openRequest ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_right_side, {
     key: 0,
-    item: $data.openRequest
+    item: $data.openRequest,
+    onUpdateRequest: $options.updateRequest
   }, null, 8
   /* PROPS */
-  , ["item"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  , ["item", "onUpdateRequest"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -17903,18 +17949,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ref: "selectList"
   }, null, 8
   /* PROPS */
-  , ["options", "selected"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  , ["options", "selected"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "input border border-gray-300 rounded",
     placeholder: "Type an URL",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.selectedUrl = $event;
-    })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.selectedUrl]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    value: $props.item.url,
+    ref: "selectUrl"
+  }, null, 8
+  /* PROPS */
+  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     "class": "col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn",
-    onClick: _cache[2] || (_cache[2] = function () {
-      return $options.sendRequest && $options.sendRequest.apply($options, arguments);
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $options.updateRequest && $options.updateRequest.apply($options, arguments);
     })
   }, "Send")])])]);
 }
@@ -17944,17 +17989,15 @@ var _hoisted_2 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _directive_click_outside = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective)("click-outside");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "input border border-gray-300 rounded",
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.openMenu && $options.openMenu.apply($options, arguments);
     }),
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $data.selectedValue = $event;
-    })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.selectedValue]]), $data.isOpen ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.options, function (option) {
+    value: $data.selectedValue
+  }, null, 8
+  /* PROPS */
+  , ["value"]), $data.isOpen ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.options, function (option) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
       onClick: function onClick($event) {
         return $options.getValue(option);

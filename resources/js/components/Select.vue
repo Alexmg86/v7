@@ -1,9 +1,6 @@
 <template>
     <div class="select-box">
-        <input class="input border border-gray-300 rounded"
-        @click="openMenu"
-        v-model="selectedValue"
-        >
+        <input class="input border border-gray-300 rounded" @click="openMenu" :value="selectedValue">
         <ul class="select-list shadow" v-if="isOpen" v-click-outside="onClickOutside">
             <li v-for="(option) in options" @click="getValue(option)">{{option}}</li>
         </ul>
@@ -31,6 +28,11 @@ export default {
             this.selectedValue = id;
             this.openMenu();
         }
-    }
+    },
+    watch: {
+        selected: function (val) {
+            this.selectedValue = val
+        }
+    },
 }
 </script>

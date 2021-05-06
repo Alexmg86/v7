@@ -17,15 +17,28 @@ class ApiItem extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['method', 'url'];
+    protected $appends = ['method', 'url', 'request'];
 
     public function getMethodAttribute()
     {
-        return 'GET';
+        $body = json_decode($this->body);
+        return $body->method ?? 'GET';
     }
 
     public function getUrlAttribute()
     {
-        return 'https://laravel.com';
+        $body = json_decode($this->body);
+        return $body->url ?? 'https://laravel.com';
+    }
+
+    public function getRequestAttribute($value)
+    {
+        $body = json_decode($value);
+        return $body->body ?? [];
+    }
+
+    public function setBodyAttribute($value)
+    {
+        $this->attributes['body'] = json_encode($value);
     }
 }

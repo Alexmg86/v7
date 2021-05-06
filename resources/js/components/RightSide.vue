@@ -12,10 +12,11 @@
                 <div class="col-span-8">
                     <input class="input border border-gray-300 rounded"
                         placeholder="Type an URL"
-                        v-model="selectedUrl"
+                        :value="item.url"
+                        ref="selectUrl"
                     >
                 </div>
-                <button class="col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn" @click="sendRequest">Send</button>
+                <button class="col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn" @click="updateRequest">Send</button>
             </div>
         </div>
     </div>
@@ -36,13 +37,16 @@
                     'POST',
                     'DELETE'
                 ],
-                selectedUrl: this.item.url,
                 isChanged: false
             }
         },
         methods: {
-            sendRequest() {
-                console.log(this.$refs['selectList'].selectedValue)
+            updateRequest() {
+                let body = {
+                    'method': this.$refs['selectList'].selectedValue,
+                    'url': this.$refs['selectUrl'].value
+                };
+                this.$emit('updateRequest', this.item, body);
             }
         }
     }

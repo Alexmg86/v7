@@ -71,4 +71,10 @@ class ApiTesterController extends Controller
         }
         $item->delete();
     }
+
+    public function updateItem(Request $request)
+    {
+        ApiItem::where('id', $request->id)->update(['body' => $request->body]);
+        return ApiItem::find($request->id);
+    }
 }

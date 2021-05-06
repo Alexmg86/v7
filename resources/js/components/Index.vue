@@ -1,12 +1,12 @@
 <template>
     <div class="h-screen inner-box flex">
         <create-modal
-            :modalVisible="modalVisible"
-            :modalTitle="modalTitle"
-            :isEdit="isEdit"
-            v-on:createSomething="createSomething"
-            v-on:modalShow="modalShow"
-            ref="modal"
+        :modalVisible="modalVisible"
+        :modalTitle="modalTitle"
+        :isEdit="isEdit"
+        v-on:createSomething="createSomething"
+        v-on:modalShow="modalShow"
+        ref="modal"
         ></create-modal>
         <div class="left-side overflow-y-auto">
             <div class="project-create flex flex-col items-center justify-center h-screen" @click="modalShow('project')" v-if="projectsItems.length == 0">
@@ -27,18 +27,22 @@
                     </span>
                 </div>
                 <project-item 
-                    v-for="(project, index) in projectsItems"
-                    :project="project"
-                    :index="index"
-                    v-on:addAction="addAction"
-                    v-on:renameAction="renameAction"
-                    v-on:removeAction="removeAction"
-                    v-on:removeSelect="removeSelect"
-                    :ref="'project-'+project.id"
+                v-for="(project, index) in projectsItems"
+                :project="project"
+                :index="index"
+                v-on:addAction="addAction"
+                v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
+                v-on:removeSelect="removeSelect"
+                :ref="'project-'+project.id"
                 ></project-item>
             </ul>
         </div>
-        <right-side :item="openRequest" v-if="openRequest"></right-side>
+        <right-side 
+        :item="openRequest" 
+        v-if="openRequest" 
+        v-on:updateRequest="updateRequest"
+        ></right-side>
     </div>
 </template>
 
@@ -221,6 +225,31 @@
                         this.openRequest = _.find(project.items, ['id', opened.id]);
                     }
                 }
+            },
+            updateRequest(item, body) {
+                axios.post('/api', {
+                    id: item.id,
+                    body: body,
+                    action: 'updateItem'
+                })
+                .then(response => {
+                    let data = response.data;
+                    var project = _.find(this.projectsItems, ['id', item.project_id]);
+                    if (item.folder_id) {
+                        var folder = _.find(project.folders, ['id', item.folder_id]);
+                        let itemIndex = _.findIndex(folder.items, ['id', item.id]);
+                        let folderIndex = _.findIndex(project.folders, ['id', item.folder_id]);
+                        folder.items[itemIndex] = data;
+                        this.openRightBar(data);
+                        project.folders[folderIndex] = folder;
+                    } else {
+                        let itemIndex = _.findIndex(project.items, ['id', item.id]);
+                        project.items[itemIndex] = data;
+                        this.openRightBar(data);
+                    }
+                    let projectIndex = _.findIndex(this.projectsItems, ['id', item.project_id]);
+                    this.projectsItems[projectIndex] = project;
+                });
             }
         },
         mounted: function () {
