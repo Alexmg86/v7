@@ -123,6 +123,7 @@
                     var folder = this.getFolder(project);
                     if (this.isEdit) {
                         folder.items[this.getItemIndex(folder)] = data;
+                        this.openRightBar(data);
                     } else {
                         folder.items.push(data);
                     }
@@ -130,6 +131,7 @@
                 } else {
                     if (this.isEdit) {
                         project.items[this.getItemIndex(project)] = data;
+                        this.openRightBar(data);
                     } else {
                         project.items.push(data);
                     }

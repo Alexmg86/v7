@@ -16803,6 +16803,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (this.isEdit) {
           folder.items[this.getItemIndex(folder)] = data;
+          this.openRightBar(data);
         } else {
           folder.items.push(data);
         }
@@ -16811,6 +16812,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         if (this.isEdit) {
           project.items[this.getItemIndex(project)] = data;
+          this.openRightBar(data);
         } else {
           project.items.push(data);
         }
