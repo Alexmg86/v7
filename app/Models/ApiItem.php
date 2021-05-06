@@ -16,4 +16,16 @@ class ApiItem extends Model
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['method', 'url'];
+
+    public function getMethodAttribute()
+    {
+        return 'GET';
+    }
+
+    public function getUrlAttribute()
+    {
+        return 'https://laravel.com';
+    }
 }

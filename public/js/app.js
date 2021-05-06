@@ -17141,7 +17141,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       options: ['GET', 'POST', 'DELETE'],
-      selectedUrl: 'dldkd',
+      selectedUrl: this.item.url,
       isChanged: false
     };
   },
@@ -17899,11 +17899,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_select_list, {
     options: $data.options,
-    selected: "GET",
+    selected: $props.item.method,
     ref: "selectList"
   }, null, 8
   /* PROPS */
-  , ["options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  , ["options", "selected"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "input border border-gray-300 rounded",
     placeholder: "Type an URL",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {

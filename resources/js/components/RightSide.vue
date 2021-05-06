@@ -7,7 +7,7 @@
             </div>
             <div class="grid grid-cols-12 flex items-center">
                 <div class="col-span-2">
-                    <select-list :options="options" selected="GET" ref="selectList"></select-list>
+                    <select-list :options="options" :selected="item.method" ref="selectList"></select-list>
                 </div>
                 <div class="col-span-8">
                     <input class="input border border-gray-300 rounded"
@@ -36,7 +36,7 @@
                     'POST',
                     'DELETE'
                 ],
-                selectedUrl: 'dldkd',
+                selectedUrl: this.item.url,
                 isChanged: false
             }
         },
