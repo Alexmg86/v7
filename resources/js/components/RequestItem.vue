@@ -17,15 +17,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </span>
+
+            <menu-list 
+                :isMenu="isMenu" 
+                :isFolder="true"
+                :isRequest="true"
+                v-on:menuShowAction="openMenu"
+                v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
+            ></menu-list>
         </div>
-        <menu-list 
-            :isMenu="isMenu" 
-            :isFolder="true"
-            :isRequest="true"
-            v-on:menuShowAction="openMenu"
-            v-on:renameAction="renameAction"
-            v-on:removeAction="removeAction"
-        ></menu-list>
     </li>
 </template>
 
@@ -45,6 +46,7 @@
         },
         methods: {
             selectItem() {
+                this.$emit('removeSelect', this.request);
                 this.isSelected = !this.isSelected
                 localStorage.setItem('apitester-selected', JSON.stringify(this.request));
             },
@@ -64,7 +66,6 @@
             this.$nextTick(function () {
                 let open = JSON.parse(localStorage.getItem('apitester-selected'));
                 if (this.request.id == open.id) {
-                    console.log(open.id);
                     this.isSelected = true;
                 }
             })

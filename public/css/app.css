@@ -31851,15 +31851,15 @@ body {
 }
 
 .project-list li .level-1:hover {
-  background: #4e4e4e;
+  background: #2e3d6e;
 }
 
 .project-list li .folder-list li .level-2:hover {
-  background: #4e4e4e;
+  background: #2e3d6e;
 }
 
 .project-list li .folder-list li .level-2.selected {
-  background: #4e4e4e;
+  background: #4d66b5;
 }
 
 .project-list li .level-1 {
@@ -31914,6 +31914,60 @@ body {
 }
 
 .menu-level-1 li:hover {
+  background: #6cc7f3;
+  color: white;
+}
+
+.right-side {
+  width: 100vw;
+  margin-left: -270px;
+  padding: 10px 10px 0px 280px;
+}
+
+.box-inner {
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.box-inner-mb {
+  margin-bottom: 10px;
+}
+
+.item-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.item-btn {
+  width: 100px;
+  padding: 2px;
+}
+
+.select-box {
+  margin-right: 10px;
+  position: relative;
+}
+
+.selected-box {
+  padding: 4px;
+  height: 34px;
+}
+
+.select-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  top: 36px;
+}
+
+.select-list li {
+  padding: 4px;
+}
+
+.select-list li:hover {
   background: #6cc7f3;
   color: white;
 }

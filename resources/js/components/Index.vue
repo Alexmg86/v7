@@ -1,12 +1,12 @@
 <template>
     <div class="h-screen inner-box flex">
-        <create-modal 
-            ref="modal"
+        <create-modal
             :modalVisible="modalVisible"
             :modalTitle="modalTitle"
             :isEdit="isEdit"
             v-on:createSomething="createSomething"
             v-on:modalShow="modalShow"
+            ref="modal"
         ></create-modal>
         <div class="left-side overflow-y-auto">
             <div class="project-create flex flex-col items-center justify-center h-screen" @click="modalShow('project')" v-if="projectsItems.length == 0">
@@ -33,21 +33,26 @@
                     v-on:addAction="addAction"
                     v-on:renameAction="renameAction"
                     v-on:removeAction="removeAction"
+                    v-on:removeSelect="removeSelect"
+                    :ref="'project-'+project.id"
                 ></project-item>
             </ul>
         </div>
+        <right-side :item="openRequest" v-if="openRequest"></right-side>
     </div>
 </template>
 
 <script>
     import ProjectItem from './ProjectItem'
     import CreateModal from './CreateModal'
+    import RightSide from './RightSide'
 
     export default {
         props: ['projects'],
         components: {
             ProjectItem,
-            CreateModal
+            CreateModal,
+            RightSide
         },
         data() {
             return {
@@ -58,7 +63,8 @@
                 modalValue: '',
                 selectedProject: null,
                 selectedFolder: null,
-                selectedRequest: null
+                selectedRequest: null,
+                openRequest: null
             }
         },
         methods: {
@@ -187,7 +193,36 @@
                         }
                     });
                 }
+            },
+            removeSelect(request) {
+                let opened = JSON.parse(localStorage.getItem('apitester-selected'));
+                if (opened) {
+                    var selectedItem = this.$refs['project-' + opened.project_id];
+                    if (opened.folder_id) {
+                        selectedItem = selectedItem.$refs['folder-' + opened.folder_id]
+                    }
+                    selectedItem.$refs['request-' + opened.id].isSelected = false;
+                }
+                this.openRightBar(request)
+            },
+            openRightBar(request) {
+                let opened = JSON.parse(localStorage.getItem('apitester-selected'));
+                if (request) {
+                    opened = request
+                }
+                if (opened) {
+                    let project = _.find(this.projectsItems, ['id', opened.project_id]);
+                    if (opened.folder_id) {
+                        let folder = _.find(project.folders, ['id', opened.folder_id]);
+                        this.openRequest = _.find(folder.items, ['id', opened.id]);
+                    } else {
+                        this.openRequest = _.find(project.items, ['id', opened.id]);
+                    }
+                }
             }
+        },
+        mounted: function () {
+            this.openRightBar()
         }
     }
 </script>

@@ -21,15 +21,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </span>
+
+            <menu-list 
+                :isMenu="isMenu" 
+                :isFolder="true" 
+                v-on:menuShowAction="openMenu"
+                v-on:menuAddRequest="addRequest"
+                v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
+            ></menu-list>
         </div>
-        <menu-list 
-            :isMenu="isMenu" 
-            :isFolder="true" 
-            v-on:menuShowAction="openMenu"
-            v-on:menuAddRequest="addRequest"
-            v-on:renameAction="renameAction"
-            v-on:removeAction="removeAction"
-        ></menu-list>
         <div v-if="!isClosed">
             <ul class="request-list" v-if="this.requestItems.length > 0">
                 <request-item 
@@ -38,6 +39,8 @@
                 :index="index"
                 v-on:renameAction="renameAction"
                 v-on:removeAction="removeAction"
+                v-on:removeSelect="removeSelect"
+                :ref="'request-'+request.id"
                 ></request-item>
             </ul>
         </div>
@@ -56,6 +59,7 @@
         },
         data() {
             return {
+                isSelected: false,
                 isClosed: true,
                 isMenu: false,
                 requestItems: this.folder.items
@@ -89,6 +93,9 @@
                     this.requestItems = this.requestItems.filter((e) => e.id !== item.id );
                 }
                 this.$emit('removeAction', type, item);
+            },
+            removeSelect(request) {
+                this.$emit('removeSelect', request);
             }
         },
         watch: {

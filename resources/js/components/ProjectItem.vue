@@ -21,15 +21,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
             </span>
+
+            <menu-list 
+                :isMenu="isMenu" 
+                v-on:menuShowAction="openMenu"
+                v-on:menuAddAction="addFolder"
+                v-on:menuAddRequest="addRequest"
+                v-on:renameAction="renameAction"
+                v-on:removeAction="removeAction"
+            ></menu-list>
         </div>
-        <menu-list 
-        :isMenu="isMenu" 
-        v-on:menuShowAction="openMenu"
-        v-on:menuAddAction="addFolder"
-        v-on:menuAddRequest="addRequest"
-        v-on:renameAction="renameAction"
-        v-on:removeAction="removeAction"
-        ></menu-list>
         <div v-if="!isClosed">
             <ul class="folder-list" v-if="this.folderItems.length > 0">
                 <folder-item 
@@ -39,6 +40,8 @@
                 v-on:menuAddRequest="addRequest"
                 v-on:renameAction="renameAction"
                 v-on:removeAction="removeAction"
+                v-on:removeSelect="removeSelect"
+                :ref="'folder-'+folder.id"
                 ></folder-item>
             </ul>
             <ul class="folder-list" v-if="this.requestItems.length > 0">
@@ -49,6 +52,8 @@
                 v-on:menuAddRequest="addRequest"
                 v-on:renameAction="renameAction"
                 v-on:removeAction="removeAction"
+                v-on:removeSelect="removeSelect"
+                :ref="'request-'+request.id"
                 ></request-item>
             </ul>
         </div>
@@ -113,6 +118,9 @@
                     }
                 }
                 this.$emit('removeAction', type, item, this.project.id);
+            },
+            removeSelect(request) {
+                this.$emit('removeSelect', request);
             }
         },
         watch: {
