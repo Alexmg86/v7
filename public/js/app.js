@@ -17245,6 +17245,11 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$emit('updateRequest', this.item, body);
     }
+  },
+  watch: {
+    item: function item(val) {
+      this.headers = val.headers;
+    }
   }
 });
 

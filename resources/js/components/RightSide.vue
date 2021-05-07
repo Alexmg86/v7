@@ -85,6 +85,11 @@
                 };
                 this.$emit('updateRequest', this.item, body);
             }
-        }
+        },
+        watch: {
+            item: function (val) {
+                this.headers = val.headers
+            }
+        },
     }
 </script>
