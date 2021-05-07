@@ -17,7 +17,7 @@ class ApiItem extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['method', 'url', 'request'];
+    protected $appends = ['method', 'url', 'request', 'headers'];
 
     public function getMethodAttribute()
     {
@@ -35,6 +35,12 @@ class ApiItem extends Model
     {
         $body = json_decode($value);
         return $body->body ?? [];
+    }
+
+    public function getHeadersAttribute($value)
+    {
+        $body = json_decode($value);
+        return $body->headers ?? [];
     }
 
     public function setBodyAttribute($value)
