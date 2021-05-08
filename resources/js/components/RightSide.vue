@@ -19,7 +19,7 @@
                 </div>
                 <div class="flex-auto">
                     <p class="label">Url</p>
-                    <input class="input small border border-gray-300 rounded" placeholder="Type an URL" :value="item.url" ref="selectUrl" @change="changed">
+                    <input class="input small border border-gray-300 rounded" placeholder="Type an URL" v-model="url" ref="selectUrl" @change="changed">
                 </div>
                 <div class="flex-initial">
                     <button class="col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn-md">Send</button>
@@ -40,6 +40,9 @@
                 </div>
                 <div class="pad-l-5">
                     <p class="label">Body</p>
+                    <div class="request-box">
+                        <prism-editor class="my-editor" v-model="code" :highlight="highlighter" line-numbers></prism-editor>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,12 +58,22 @@
 <script>
     import selectList from './Select';
     import headerItem from './HeaderItem';
+    import { PrismEditor } from 'vue-prism-editor';
+    import 'vue-prism-editor/dist/prismeditor.min.css';
+
+    import { highlight, languages } from 'prismjs/components/prism-core';
+
+    import 'prismjs/components/prism-clike';
+    import 'prismjs/components/prism-javascript';
+    import 'prismjs/components/prism-json';
+    import 'prismjs/themes/prism.css';
 
     export default {
         props: ['item'],
         components: {
             selectList,
-            headerItem
+            headerItem,
+            PrismEditor
         },
         data() {
             return {
@@ -73,11 +86,16 @@
                     'OPTIONS',
                     'PATCH'
                 ],
+                code: this.item.request,
                 headers: this.item.headers,
+                url: this.item.url,
                 isChanged: false
             }
         },
         methods: {
+            highlighter(code) {
+                return highlight(code, languages.json);
+            },
             addHeader() {
                 this.headers.push({
                     'isChecked': true,
@@ -95,14 +113,12 @@
                 this.changed();
             },
             updateRequest() {
-
                 let body = {
                     'method': this.$refs['selectList'].selectedValue,
                     'url': this.$refs['selectUrl'].value,
                     'headers': this.headers,
+                    'request': this.code
                 };
-                // console.log(this.headers.keys);
-                // console.log(body);
                 this.$emit('updateRequest', this.item, body);
                 this.isChanged = false
             },
@@ -112,8 +128,9 @@
         },
         watch: {
             item: function (val) {
-                console.log(val);
-                this.headers = val.headers
+                this.headers = val.headers,
+                this.url = val.url,
+                this.code = val.request
             }
         },
     }

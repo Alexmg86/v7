@@ -34,7 +34,7 @@ class ApiItem extends Model
     public function getRequestAttribute()
     {
         $body = json_decode($this->body);
-        return $body->body ?? [];
+        return $body->request ?? '';
     }
 
     public function getHeadersAttribute()
