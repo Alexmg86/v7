@@ -15,14 +15,14 @@
             <div class="flex items-end mb-10">
                 <div class="flex-initial">
                     <p class="label">Method</p>
-                    <select-list :options="options" :selected="item.method" ref="selectList" v-on:changed="changed"></select-list>
+                    <select-list :options="options" :selected="selectMethod" ref="selectList" v-on:updateSelect="updateSelect"></select-list>
                 </div>
                 <div class="flex-auto">
                     <p class="label">Url</p>
                     <input class="input small border border-gray-300 rounded" placeholder="Type an URL" v-model="url" ref="selectUrl" @change="changed">
                 </div>
                 <div class="flex-initial">
-                    <button class="col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn-md">Send</button>
+                    <button class="col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn-md" @click="sendRequest">Send</button>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                 </div>
                 <div class="pad-l-5">
                     <p class="label">Body</p>
-                    <div class="request-box">
+                    <div class="request-box" v-if="['POST','PUT','PATCH'].includes(selectMethod)">
                         <prism-editor class="my-editor" v-model="code" :highlight="highlighter" line-numbers></prism-editor>
                     </div>
                 </div>
@@ -88,6 +88,7 @@
                 ],
                 code: this.item.request,
                 headers: this.item.headers,
+                selectMethod: this.item.method,
                 url: this.item.url,
                 isChanged: false
             }
@@ -122,15 +123,27 @@
                 this.$emit('updateRequest', this.item, body);
                 this.isChanged = false
             },
+            updateSelect(value) {
+                this.selectMethod = value;
+                this.changed();
+            },
             changed() {
                 this.isChanged = true
+            },
+            sendRequest() {
+                axios({
+                  method: this.selectMethod,
+                  url: this.url,
+                  data: JSON.parse(this.code)
+                })
             }
         },
         watch: {
             item: function (val) {
                 this.headers = val.headers,
                 this.url = val.url,
-                this.code = val.request
+                this.code = val.request,
+                this.selectMethod = val.method
             }
         },
     }

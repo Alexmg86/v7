@@ -17243,6 +17243,7 @@ __webpack_require__.r(__webpack_exports__);
       options: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH'],
       code: this.item.request,
       headers: this.item.headers,
+      selectMethod: this.item.method,
       url: this.item.url,
       isChanged: false
     };
@@ -17277,13 +17278,24 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('updateRequest', this.item, body);
       this.isChanged = false;
     },
+    updateSelect: function updateSelect(value) {
+      this.selectMethod = value;
+      this.changed();
+    },
     changed: function changed() {
       this.isChanged = true;
+    },
+    sendRequest: function sendRequest() {
+      axios({
+        method: this.selectMethod,
+        url: this.url,
+        data: JSON.parse(this.code)
+      });
     }
   },
   watch: {
     item: function item(val) {
-      this.headers = val.headers, this.url = val.url, this.code = val.request;
+      this.headers = val.headers, this.url = val.url, this.code = val.request, this.selectMethod = val.method;
     }
   }
 });
@@ -17318,7 +17330,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getValue: function getValue(option) {
       if (this.selectedValue != option) {
-        this.$emit('changed');
+        this.$emit('updateSelect', option);
       }
 
       this.selectedValue = option;
@@ -18153,14 +18165,9 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_13 = {
   "class": "flex-initial"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  "class": "col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn-md"
-}, "Send")], -1
-/* HOISTED */
-);
-
+};
 var _hoisted_14 = {
   "class": "grid grid-cols-2"
 };
@@ -18185,6 +18192,7 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_19 = {
+  key: 0,
   "class": "request-box"
 };
 
@@ -18214,12 +18222,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, [_hoisted_6, $data.isChanged ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_7)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_select_list, {
     options: $data.options,
-    selected: $props.item.method,
+    selected: $data.selectMethod,
     ref: "selectList",
-    onChanged: $options.changed
+    onUpdateSelect: $options.updateSelect
   }, null, 8
   /* PROPS */
-  , ["options", "selected", "onChanged"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  , ["options", "selected", "onUpdateSelect"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "input small border border-gray-300 rounded",
     placeholder: "Type an URL",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
@@ -18231,7 +18239,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.url]])]), _hoisted_13]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [_hoisted_16, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.headers, function (header, index) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.url]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    "class": "col-span-2 bg-blue-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn-md",
+    onClick: _cache[4] || (_cache[4] = function () {
+      return $options.sendRequest && $options.sendRequest.apply($options, arguments);
+    })
+  }, "Send")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [_hoisted_16, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.headers, function (header, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_header_item, {
       index: index,
       header: header,
@@ -18244,20 +18257,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* UNKEYED_FRAGMENT */
   )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     "class": "col-span-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 justify-self-end item-btn",
-    onClick: _cache[4] || (_cache[4] = function () {
+    onClick: _cache[5] || (_cache[5] = function () {
       return $options.addHeader && $options.addHeader.apply($options, arguments);
     })
-  }, "Add header")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_prism_editor, {
+  }, "Add header")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [_hoisted_18, ['POST', 'PUT', 'PATCH'].includes($data.selectMethod) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_prism_editor, {
     "class": "my-editor",
     modelValue: $data.code,
-    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.code = $event;
     }),
     highlight: $options.highlighter,
     "line-numbers": ""
   }, null, 8
   /* PROPS */
-  , ["modelValue", "highlight"])])])])]), _hoisted_20]);
+  , ["modelValue", "highlight"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), _hoisted_20]);
 }
 
 /***/ }),

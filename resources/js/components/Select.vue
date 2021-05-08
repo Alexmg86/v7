@@ -26,7 +26,7 @@ export default {
         },
         getValue(option) {
             if (this.selectedValue != option) {
-                this.$emit('changed');
+                this.$emit('updateSelect', option);
             }
             this.selectedValue = option;
             this.openMenu();

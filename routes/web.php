@@ -21,6 +21,9 @@ Route::get('parse', 'ParseController@index');
 Route::get('api', 'ApiTesterController@index');
 Route::post('api', 'ApiTesterController@action');
 
+Route::get('api/{id}', 'ApiTesterController@testGet');
+Route::post('api/{id}', 'ApiTesterController@testPost');
+
 
 Route::get('/', function () {
     $invoices = Invoice::whereCurrentYear()->count();

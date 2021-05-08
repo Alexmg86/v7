@@ -77,4 +77,15 @@ class ApiTesterController extends Controller
         ApiItem::where('id', $request->id)->update(['body' => $request->body]);
         return ApiItem::find($request->id);
     }
+
+    public function testGet(Request $request)
+    {
+        return ApiItem::first();
+        dd($request->all());
+    }
+
+    public function testPost(Request $request, $id)
+    {
+        dd($request->all());
+    }
 }

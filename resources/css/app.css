@@ -240,7 +240,7 @@ body {
 
 .request-box .prism-editor-wrapper .prism-editor__container {
     padding: 0 0 0 4px;
-    min-height: 200px;
+    min-height: 100%;
     border-left-width: 1px;
     border-color: #d1d5db;
 }
