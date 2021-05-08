@@ -24,8 +24,11 @@ export default {
         onClickOutside() {
             this.openMenu();
         },
-        getValue(id) {
-            this.selectedValue = id;
+        getValue(option) {
+            if (this.selectedValue != option) {
+                this.$emit('changed');
+            }
+            this.selectedValue = option;
             this.openMenu();
         }
     },

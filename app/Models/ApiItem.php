@@ -31,15 +31,15 @@ class ApiItem extends Model
         return $body->url ?? 'https://laravel.com';
     }
 
-    public function getRequestAttribute($value)
+    public function getRequestAttribute()
     {
-        $body = json_decode($value);
+        $body = json_decode($this->body);
         return $body->body ?? [];
     }
 
-    public function getHeadersAttribute($value)
+    public function getHeadersAttribute()
     {
-        $body = json_decode($value);
+        $body = json_decode($this->body);
         return $body->headers ?? [];
     }
 

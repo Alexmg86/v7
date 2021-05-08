@@ -8,6 +8,7 @@
                 <input class="input border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
                  :placeholder="'Enter ' + modalTitle + ' name'"
                  @keyup.enter="createSomething"
+                 @keyup.esc="modalShow"
                  v-model="value"
                  ref='modalTitle'
             >
