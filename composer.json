@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.2.5|^8.0",
         "darkaonline/l5-swagger": "^8.0",
         "fico7489/laravel-eloquent-join": "^4.1",
         "fideloper/proxy": "^4.2",
@@ -17,7 +17,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "paquettg/php-html-parser": "^3.1",
-        "rap2hpoutre/laravel-log-viewer": "^1.6"
+        "rap2hpoutre/laravel-log-viewer": "^1.6",
+        "alexmg86/laravel-elasticsearch": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
@@ -51,7 +52,8 @@
         "psr-4": {
             "Tests\\": "tests/",
             "Alexmg86\\LaravelSubQuery\\": "packages/alexmg86/laravel-sub-query/src/",
-            "Alexmg86\\LaravelGoodsRu\\": "packages/alexmg86/laravel-goodsru/src/"
+            "Alexmg86\\LaravelGoodsRu\\": "packages/alexmg86/laravel-goodsru/src/",
+            "Alexmg86\\LaravelElasticsearch\\": "packages/alexmg86/laravel-elasticsearch/src/"
         }
     },
     "minimum-stability": "dev",
@@ -76,6 +78,10 @@
         {
             "type": "path",
             "url": "packages/alexmg86/laravel-goodsru"
+        },
+        {
+            "type": "path",
+            "url": "packages/alexmg86/laravel-elasticsearch"
         }
     ]
 }

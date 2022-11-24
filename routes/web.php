@@ -26,7 +26,7 @@ Route::post('api/{id}', 'ApiTesterController@testPost');
 
 
 Route::get('/', function () {
-    $invoices = Invoice::whereCurrentYear()->count();
+    // $invoices = Invoice::whereCurrentYear()->count();
     // dd($invoices);
 
     // $invoices = Invoice::withSum('items:price')->getLikeSql();
